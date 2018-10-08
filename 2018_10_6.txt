@@ -1,0 +1,125 @@
+ServletContext接口及其常用方法
+1.如何获取ServletContext对象
+	方式1：在Servlet类中，super.getServletContext();
+	方式2：通过请求对象来获取：request.getServletContext();   from Tomcat7
+	方式3：通过Session对象来获取：request.getSession.getServletContext();
+	注意：无论哪种方式获取的ServletContext对象都是同一个，因为在整个Tomcat生命周期中，有且仅有一个ServletContext对象
+2.ServletContext中的常用方法
+	1）String getRealPath(String path):根据一个资源的相对Web根的路径，获取它的真实路径（绝对路径）
+	2）String getContextPath():返回当前响应的上下文路径<Context path="XXX">
+3.配置/获取全局参数
+	配置：
+		全局初始化参数
+	 <context-param>
+  		<param-name>date</param-name>
+  		<param-value>20181006</param-value>
+  	</context-param>
+	获取：
+	1）String getInitParameter(String name);//获取指定名的全局参数
+	2) Enumeration<String> getInitParameterNames();//获取所有全局参数的名字
+==================================================================================================
+
+1.动态网页
+	1）Servlet动态网页 = Java代码（主） + html代码（辅）；在Servlet中编写html代码
+	2）JSP动态网页      = Java代码（辅）+ html代码（主）；在html中编写java代码
+-----------------------------------------------------
+Servlet擅长的事情，不擅长界面输出，JSP擅长界面输出
+	1）接受请求参数，封装成对象
+	2）调用业务方法，来处理请求
+	3）控制界面跳转
+----------------------------------------------------
+责任分离思想：各自做各自最擅长的事情
+
+2.JSP(Java Server Page):Java的服务页面，Java动态页面
+	JSP就是一个Servlet
+------------------------------------------------------
+Tomcat根目录下的work目录存放，jsp编译成Servlet的文件
+
+3.JSP基本语法
+	1)JSP注释与HTML注释的区别
+		①语法：JSP  <%-- --%>
+		             HTML <!-- -->
+		②翻译：JSP注释不会翻译到Servlet类中，而HTML注释会翻译，只是浏览器对HTML注释不做渲染
+4.JSP的标准指令：设定JSP网页的整体配置信息
+	特点：
+		1）不向客户端产生任何输出
+		2）指令在JSP整个文件范围内有效
+		3）为翻译阶段提法了全局信息
+	每个JSP都得有page指令，一般放在JSP的第一行
+	JSP的三大指令
+		1）page
+			作用：定义JSP页面的各种属性
+				1)language：指示JSP页面中使用的脚本语言。默认值为java，且仅支持Java
+				2)extends:指示JSP对应的Servlet类的父类，不要修改
+				3)import:导入JSP中的Java脚本使用到的类或包
+				........
+		2）include
+		3）taglib
+------------------------------------------------------------------------
+错误页面
+	isErrorPage:是否把当前页面设置为专门显示错误的页面
+	errorPage:当前页面出错后，跳转到哪个界面上去
+	------
+	全局错误页面
+------------------------------------------------------------------------------
+JSP九大内置对象：在JSP中不需要声明和定义，可以直接使用的对象
+	
+	内置对象名称	内置对象类型		描述
+	---------------------------------------------------------------------
+	request       	HttpServletRequest		请求对象
+	response		HttpServletResponse	响应对象
+	pageContext	PageContext		当前JSP作用域对象
+	session		HttpSession		会话对象（page指令，属性session=""）
+	exception		Throwable		异常类型（page指令，属性isErrorPage=""）
+	application	ServletContext		当前Web应用对象
+	config		ServletConfig		当前Servlet的配置信息对象
+	out		JspWriter			字符输出流对象
+	page		Object			当前Servlet对象 
+	
+------------------------------------------------------------------------
+<jsp:forward page="/jspdemo/hello/hello.jsp">
+		<jsp:param value="men" name="gender"/>
+</jsp:forward>	
+------------------------------------------------------------------------
+静态和动态包含
+	静态包含：使用JSP的include指令
+		<%@include file="被包含的页面文件" %>
+	动态包含：使用JSP的动作指令
+		<jsp:include page="被包含的页面文件"/>
+	选择
+		需要传递数据时使用动态包含，其他情况随意
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
